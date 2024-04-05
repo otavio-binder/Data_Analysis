@@ -3,7 +3,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from sys import argv
-
 def tablefield2int(s):
     s = s[1 : len(s) - 1]
     i = int(s)
@@ -20,13 +19,19 @@ def table2dic(M):
             D[keys[k]][n - 1] = L[k]
     return D
 
-def Pegar_digito_especifico(D):
-    digitos_chave = []
-    aux = int(input("digite quantos digitos deseja pegar: "))
-    aux2 = input("Digite a coluna que deseja pegar: ")
-    cont = 0
-    for i in D[aux2]:
-        i = D[aux2]
+def Digitos_Especifico(D):
+    dig = int(input("Digite quantos digitos deseja pegar: "))
+    va = str(input("Digite o codigo do municipio: "))
+    va2 = (D[va])
+    lista_resultado = []
+    #print(lista["12"])
+    for valores in va2:
+        for valor in valores:
+            lista_resultado.append(valor[:dig + 1])
+        cd = "".join(lista_resultado)  
+    #print(va2)    
+    #print(cd)
+    print(cd)
 
 def remove_quotes_each_field(M):
     N = M
@@ -87,9 +92,17 @@ def Filtro_Cirurgia(D):
 
 
 def Filtro_Estado(D):
+    dic_Mun = {"12" : "ACRE" , "27" : "ALAGOAS", "16" : "AMAPÁ", "13" : "AMAZONAS", "29" : "BAHIA",
+               "23" : "CEARÁ", "53" : "DF", "32" : "ESPÍRITO SANTO", "52" : "GOIÁS",
+               "21" : "MARANHÃO", "51" : "MATO GROSSO", "50" : "MATO GROSSO DO SUL", 
+               "31" : "MINAS GERAIS" , "15" : "PARÁ" , "25" : "PARAÍBA" , "41" : "PARANÁ" , "26" : "PERNAMBUCO",
+               "22" : "PIAUÍ" , "33" : "RIO DE JANEIRO" , "24" : "RIO GRANDE DO NORTE" , "43" : "RIO GRANDE DO SUL" , 
+               "11" : "RONDONIA" , "14" : "RORAIMA" , "42" : "SANTA CATARINA" , "35" : "SÃO PAULO" ,
+               "28" : "SEGIPE" , "17" : "TOCANTINS"}
+    id = str(input('Digite o nome do estado: '))
     listaprocura = []
     cont = 0
-    Pegar_digito_especifico(D)
+    #Pegar_digito_especifico(D)
 
 
 if __name__ == '__main__':
@@ -117,4 +130,5 @@ if __name__ == '__main__':
     #print(D["ASSISTMED"])
     #Filtro_Idade(D)
     #Filtro_Cirurgia (D)
-    Pegar_digito_especifico(D)
+    #Pegar_digito_especifico(D)
+    Digitos_Especifico(D)
