@@ -17,3 +17,9 @@ print('Versão do scipy -> %s' % scip.__version__)
 print('Versão do statsmodels -> %s' % stmds.__version__)
 print('Versão do seaborn -> %s' % seab.__version__)
 print('Versão do matplotlib-> %s' % mplt.__version__)
+<<<<<<< HEAD
+print('Versão do Levenshtein -> %s' % lv.__version__)
+=======
+print('Versão do Levenshtein -> %s' % lv.__version__)
+
+>>>>>>> 82c085ce31d733fa36c5dca329e7cfe0115b85f5

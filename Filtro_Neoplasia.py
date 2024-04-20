@@ -3,11 +3,15 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from sys import argv
-def tablefield2int(s):
+from Levenshtein import distance as lv 
+
+#Essa função pega uma string e corta o primeiro e o ultimo caractere
+def tablefield2int(s):  
     s = s[1 : len(s) - 1]
     i = int(s)
     return i
 
+#Essa função pega um dataframe e o transforma em um dicionário
 def table2dic(M):
     D = {}
     keys = M[0, :]
@@ -19,6 +23,7 @@ def table2dic(M):
             D[keys[k]][n - 1] = L[k]
     return D
 
+#
 def Digitos_Especifico(D):
     dig = int(input("Digite quantos digitos deseja pegar: "))
     va = str(input("Digite o codigo do municipio: "))
@@ -30,7 +35,6 @@ def Digitos_Especifico(D):
             lista_resultado.append(valor[:dig + 1])
         cd = "".join(lista_resultado)  
     #print(va2)    
-    #print(cd)
     print(cd)
 
 def remove_quotes_each_field(M):
@@ -90,19 +94,26 @@ def Filtro_Cirurgia(D):
             cont = cont + 1
     print("resultado obtido", i)
 
-
+#Essa função recebe o nome de um estado e retorna a chave dele
 def Filtro_Estado(D):
+    listabusca = []
     dic_Mun = {"12" : "ACRE" , "27" : "ALAGOAS", "16" : "AMAPÁ", "13" : "AMAZONAS", "29" : "BAHIA",
-               "23" : "CEARÁ", "53" : "DF", "32" : "ESPÍRITO SANTO", "52" : "GOIÁS",
-               "21" : "MARANHÃO", "51" : "MATO GROSSO", "50" : "MATO GROSSO DO SUL", 
-               "31" : "MINAS GERAIS" , "15" : "PARÁ" , "25" : "PARAÍBA" , "41" : "PARANÁ" , "26" : "PERNAMBUCO",
-               "22" : "PIAUÍ" , "33" : "RIO DE JANEIRO" , "24" : "RIO GRANDE DO NORTE" , "43" : "RIO GRANDE DO SUL" , 
-               "11" : "RONDONIA" , "14" : "RORAIMA" , "42" : "SANTA CATARINA" , "35" : "SÃO PAULO" ,
-               "28" : "SEGIPE" , "17" : "TOCANTINS"}
-    id = str(input('Digite o nome do estado: '))
-    listaprocura = []
-    cont = 0
-    #Pegar_digito_especifico(D)
+            	"23" : "CEARÁ", "53" : "DF", "32" : "ESPÍRITO SANTO", "52" : "GOIÁS",
+            	"21" : "MARANHÃO", "51" : "MATO GROSSO", "50" : "MATO GROSSO DO SUL", 
+            	"31" : "MINAS GERAIS" , "15" : "PARÁ" , "25" : "PARAÍBA" , "41" : "PARANÁ" , "26" : "PERNAMBUCO",
+            	"22" : "PIAUÍ" , "33" : "RIO DE JANEIRO" , "24" : "RIO GRANDE DO NORTE" , "43" : "RIO GRANDE DO SUL" , 
+            	"11" : "RONDONIA" , "14" : "RORAIMA" , "42" : "SANTA CATARINA" , "35" : "SÃO PAULO" ,
+            	"28" : "SEGIPE" , "17" : "TOCANTINS"}
+    id = input('Digite o nome do estado: ').upper()
+    dic_orden = dict()
+    for i,j in dic_Mun.items():
+        distancia = lv(id, j)
+        if	distancia <=2:
+            print(f"{i} e {j}")
+            dic_orden[i] = j
+    print(dic_orden.keys())
+    return dic_orden.values()
+    #Pegar_digito_especifico(D
 
 
 if __name__ == '__main__':
@@ -131,4 +142,5 @@ if __name__ == '__main__':
     #Filtro_Idade(D)
     #Filtro_Cirurgia (D)
     #Pegar_digito_especifico(D)
-    Digitos_Especifico(D)
+    #Digitos_Especifico(D)
+    Filtro_Estado(D)
