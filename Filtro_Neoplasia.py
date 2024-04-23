@@ -117,11 +117,10 @@ def Filtro_Estado(D):
         listabuscadigitos.append(int(listadic[chv])) # pegando os dois primeiro digittos
     for cnt in range(len(listabuscadigitos)):
         (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
-    print(listabuscadigitos)
-    print(dic_orden.keys())
-    for cnt in range(len(listabuscadigitos)):
-        if listabuscadigitos[cnt] == dic_orden.keys():
-            contador = contador + 1
+    for chave in dic_orden.keys():
+        for cnt in range(len(listabuscadigitos)):
+            if listabuscadigitos[cnt] == chave:
+                contador = contador + 1
     print("existem", contador ,"em", endereco)
     return contador
 
