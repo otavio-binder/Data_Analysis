@@ -96,24 +96,33 @@ def Filtro_Cirurgia(D):
 
 #Essa função recebe o nome de um estado e retorna a chave dele
 def Filtro_Estado(D):
-    listabusca = []
-    dic_Mun = {"12" : "ACRE" , "27" : "ALAGOAS", "16" : "AMAPÁ", "13" : "AMAZONAS", "29" : "BAHIA",
-            	"23" : "CEARÁ", "53" : "DF", "32" : "ESPÍRITO SANTO", "52" : "GOIÁS",
-            	"21" : "MARANHÃO", "51" : "MATO GROSSO", "50" : "MATO GROSSO DO SUL", 
-            	"31" : "MINAS GERAIS" , "15" : "PARÁ" , "25" : "PARAÍBA" , "41" : "PARANÁ" , "26" : "PERNAMBUCO",
-            	"22" : "PIAUÍ" , "33" : "RIO DE JANEIRO" , "24" : "RIO GRANDE DO NORTE" , "43" : "RIO GRANDE DO SUL" , 
-            	"11" : "RONDONIA" , "14" : "RORAIMA" , "42" : "SANTA CATARINA" , "35" : "SÃO PAULO" ,
-            	"28" : "SEGIPE" , "17" : "TOCANTINS"}
-    id = input('Digite o nome do estado: ').upper()
+    listabuscadigitos = []
+    contador = 0
+    listadic = D["CODMUNRES"]
+    dic_Mun = {12 : "ACRE" , 27 : "ALAGOAS", 16 : "AMAPÁ", 13 : "AMAZONAS", 29 : "BAHIA",
+            	23 : "CEARÁ", 53 : "DF", 32 : "ESPÍRITO SANTO", 52 : "GOIÁS",
+            	21 : "MARANHÃO", 51 : "MATO GROSSO", 50 : "MATO GROSSO DO SUL", 
+            	31 : "MINAS GERAIS" , 15 : "PARÁ" , 25 : "PARAÍBA" , 41 : "PARANÁ" , 26 : "PERNAMBUCO",
+            	22 : "PIAUÍ" , 33 : "RIO DE JANEIRO" , 24 : "RIO GRANDE DO NORTE" , 43 : "RIO GRANDE DO SUL" , 
+            	11 : "RONDONIA" , 14 : "RORAIMA" , 42 : "SANTA CATARINA" , 35 : "SÃO PAULO" ,
+            	28 : "SEGIPE" , 17 : "TOCANTINS"}
+    endereco = input('Digite o nome do estado: ').upper()
     dic_orden = dict()
     for i,j in dic_Mun.items():
-        distancia = lv(id, j)
+        distancia = lv(endereco, j)
         if	distancia <=2:
             print(f"{i} e {j}")
             dic_orden[i] = j
-    print(dic_orden.keys())
-    return dic_orden.values()
-    #Pegar_digito_especifico(D
+    for chv in range(len(listadic)):
+        listabuscadigitos.append(int(listadic[chv])) # pegando os dois primeiro digittos
+    for cnt in range(len(listabuscadigitos)):
+        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
+    for chave in dic_orden.keys():
+        for cnt in range(len(listabuscadigitos)):
+            if listabuscadigitos[cnt] == chave:
+                contador = contador + 1
+    print("existem", contador ,"em", endereco)
+    return contador
 
 
 if __name__ == '__main__':
@@ -144,3 +153,4 @@ if __name__ == '__main__':
     #Pegar_digito_especifico(D)
     #Digitos_Especifico(D)
     Filtro_Estado(D)
+   # print(D["CODMUNRES"])
