@@ -24,18 +24,6 @@ def table2dic(M):
     return D
 
 #
-def Digitos_Especifico(D):
-    dig = int(input("Digite quantos digitos deseja pegar: "))
-    va = str(input("Digite o codigo do municipio: "))
-    va2 = (D[va])
-    lista_resultado = []
-    #print(lista["12"])
-    for valores in va2:
-        for valor in valores:
-            lista_resultado.append(valor[:dig + 1])
-        cd = "".join(lista_resultado)  
-    #print(va2)    
-    print(cd)
 
 def remove_quotes_each_field(M):
     N = M
@@ -66,7 +54,7 @@ def Filtro_Idade(D):
     idade2 = idade2 + 400
     for i in D["IDADE"]:
         b = int(i)
-        if (b > idade1) and (b < idade2) :
+        if (b >= idade1) and (b <= idade2) :
             b = b - 400
             listaprocura.append(b)
             cont = cont + 1
@@ -87,7 +75,7 @@ def Filtro_Assit_Med(D):
 def Filtro_Cirurgia(D):
     listaprocura0 = []
     cont = 0
-    aux = input("digite 1 se quer saber se passou por cirurgia, ou 2 se não passou por cirurgia ")
+    aux = int(input("digite 1 se quer saber se passou por cirurgia, ou 2 se não passou por cirurgia "))
     for i in D["CIRURGIA"]:
         if  i == aux:
             listaprocura0.append(i)
@@ -98,7 +86,9 @@ def Filtro_Cirurgia(D):
 def Filtro_Estado(D):
     listabuscadigitos = []
     contador = 0
-    listadic = D["CODMUNRES"]
+    procuradic = input("Digite o que deseja procurar(ex: CODMUNRES): ").upper()
+    listadic = D[procuradic]
+    print(listadic)
     dic_Mun = {12 : "ACRE" , 27 : "ALAGOAS", 16 : "AMAPÁ", 13 : "AMAZONAS", 29 : "BAHIA",
             	23 : "CEARÁ", 53 : "DF", 32 : "ESPÍRITO SANTO", 52 : "GOIÁS",
             	21 : "MARANHÃO", 51 : "MATO GROSSO", 50 : "MATO GROSSO DO SUL", 
@@ -114,7 +104,7 @@ def Filtro_Estado(D):
             print(f"{i} e {j}")
             dic_orden[i] = j
     for chv in range(len(listadic)):
-        listabuscadigitos.append(int(listadic[chv])) # pegando os dois primeiro digittos
+        listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
     for cnt in range(len(listabuscadigitos)):
         (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
     for chave in dic_orden.keys():
@@ -122,7 +112,7 @@ def Filtro_Estado(D):
             if listabuscadigitos[cnt] == chave:
                 contador = contador + 1
     print("existem", contador ,"em", endereco)
-    return contador
+    return contador, listabuscadigitos
 
 
 if __name__ == '__main__':
@@ -144,13 +134,6 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    #print(D["IDADE"])
-    #Filtro_Neoplasia(D)
-    #Filtro_Idade(D)
-    #print(D["ASSISTMED"])
-    #Filtro_Idade(D)
-    #Filtro_Cirurgia (D)
-    #Pegar_digito_especifico(D)
-    #Digitos_Especifico(D)
-    Filtro_Estado(D)
+    #Filtro_Estado(D)
+    Filtro_Idade(D)
    # print(D["CODMUNRES"])
