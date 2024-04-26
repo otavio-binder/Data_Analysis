@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 from sys import argv
 from Levenshtein import distance as lv 
+import pandas as pd
 
 #Essa função pega uma string e corta o primeiro e o ultimo caractere
 def tablefield2int(s):  
@@ -98,21 +99,28 @@ def Filtro_Estado(D):
             	28 : "SEGIPE" , 17 : "TOCANTINS"}
     endereco = input('Digite o nome do estado: ').upper()
     dic_orden = dict()
-    for i,j in dic_Mun.items():
-        distancia = lv(endereco, j)
+    for key, value in dic_Mun.items():
+        distancia = lv(endereco, value)
         if	distancia <=2:
-            print(f"{i} e {j}")
-            dic_orden[i] = j
-    for chv in range(len(listadic)):
-        listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
-    for cnt in range(len(listabuscadigitos)):
-        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
+            print(f"{key} e {value}")
+            dic_orden[key] = value
+    for chv in listadic:
+        listabuscadigitos.append(int(chv)/10000) #convertendo para inteiro
     for chave in dic_orden.keys():
-        for cnt in range(len(listabuscadigitos)):
-            if listabuscadigitos[cnt] == chave:
+        for cnt in listabuscadigitos:
+            if cnt == chave:
                 contador = contador + 1
     print("existem", contador ,"em", endereco)
     return contador, listabuscadigitos
+
+#Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
+# def Morte_Idade():
+#     count, estado_sel = Filtro_Estado(D)
+#     dic_0 = {}
+#     for i in M:
+#         if 
+
+
 
 
 if __name__ == '__main__':
@@ -129,11 +137,12 @@ if __name__ == '__main__':
     for k in range(0, len(contents)):
         L = contents[k].split(';')
         file_information.append(L)
-
+    Data_Frame = pd.read_csv("exemplopronto.csv", sep = ";")
     M = np.array(file_information)
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    #Filtro_Estado(D)
-    Filtro_Idade(D)
-   # print(D["CODMUNRES"])
+    # Filtro_Estado(D)
+    # Filtro_Idade(D)
+    # print(D["CODMUNRES"])
+    print(Data_Frame["CODMUNRES"])
