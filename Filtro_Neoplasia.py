@@ -24,7 +24,6 @@ def table2dic(M):
             D[keys[k]][n - 1] = L[k]
     return D
 
-#
 
 def remove_quotes_each_field(M):
     N = M
@@ -87,6 +86,7 @@ def Filtro_Cirurgia(D):
 def Filtro_Estado(D):
     listabuscadigitos = []
     contador = 0
+    lista_armazena_posi = []
     procuradic = input("Digite o que deseja procurar(ex: CODMUNRES): ").upper()
     listadic = D[procuradic]
     print(listadic)
@@ -105,13 +105,17 @@ def Filtro_Estado(D):
             print(f"{key} e {value}")
             dic_orden[key] = value
     for chv in listadic:
-        listabuscadigitos.append(int(chv)/10000) #convertendo para inteiro
+        listabuscadigitos.append(int(chv)) #convertendo para inteiro
+    for cnt in range(len(listabuscadigitos)): #esse segundo for é necessário para pegar apenas o valor que queremos
+        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
     for chave in dic_orden.keys():
         for cnt in listabuscadigitos:
             if cnt == chave:
                 contador = contador + 1
+                lista_armazena_posi.append(contador) #armazenando as posicoes
     print("existem", contador ,"em", endereco)
-    return contador, listabuscadigitos
+    print("posicoes armazenadas: ", lista_armazena_posi)
+    return contador, listabuscadigitos, lista_armazena_posi
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
 # def Morte_Idade():
@@ -142,7 +146,7 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    # Filtro_Estado(D)
+    Filtro_Estado(D)
     # Filtro_Idade(D)
     # print(D["CODMUNRES"])
-    print(Data_Frame["CODMUNRES"])
+    #print(Data_Frame["CODMUNRES"])
