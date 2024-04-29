@@ -36,18 +36,22 @@ def remove_quotes_each_field(M):
 def Filtro_Neoplasia(D):
     listaprocura = []
     cont = 0
+    lista_armazena_posi = []
     coluna = str(input("Digite a coluna: "))
     procurado = str(input("Digite o que quer procurar na coluna: "))
     for i in D[coluna]:
         if i == procurado:
             listaprocura.append(i)
             cont = cont + 1
+            lista_armazena_posi.append(cont)
     print(listaprocura)
     print("achou", cont, "elementos")
+    return cont, lista_armazena_posi
 
 def Filtro_Idade(D):
     listaprocura = []
     cont = 0
+    lista_armazena_posi = []
     idade1 = int(input("Digite a idade menor: " ))
     idade2 = int(input("Digite a idade maior: " ))
     idade1 = idade1 + 400
@@ -58,8 +62,10 @@ def Filtro_Idade(D):
             b = b - 400
             listaprocura.append(b)
             cont = cont + 1
+            lista_armazena_posi.append(cont)
     print(listaprocura)
     print("achou", cont, "elementos")
+    return cont, lista_armazena_posi
 
 
 def Filtro_Assit_Med(D):
@@ -75,12 +81,12 @@ def Filtro_Assit_Med(D):
 def Filtro_Cirurgia(D):
     listaprocura0 = []
     cont = 0
-    aux = int(input("digite 1 se quer saber se passou por cirurgia, ou 2 se não passou por cirurgia "))
+    aux = int(input("digite 1 se quer saber se passou por cirurgia, ou 2 se não passou por cirurgia: "))
     for i in D["CIRURGIA"]:
         if  i == aux:
             listaprocura0.append(i)
             cont = cont + 1
-    print("resultado obtido", i)
+    print("resultado obtido", cont)
 
 #Essa função recebe o nome de um estado e retorna a chave dele
 def Filtro_Estado(D):
@@ -150,3 +156,4 @@ if __name__ == '__main__':
     # Filtro_Idade(D)
     # print(D["CODMUNRES"])
     #print(Data_Frame["CODMUNRES"])
+    #Filtro_Cirurgia(D)
