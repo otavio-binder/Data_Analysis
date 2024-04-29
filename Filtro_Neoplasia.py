@@ -38,12 +38,13 @@ def Filtro_Neoplasia(D):
     cont = 0
     lista_armazena_posi = []
     coluna = str(input("Digite a coluna: "))
+    lista = D[coluna]
     procurado = str(input("Digite o que quer procurar na coluna: "))
-    for i in D[coluna]:
-        if i == procurado:
-            listaprocura.append(i)
+    for i in range(len(lista)):
+        if lista[i] == procurado:
+            listaprocura.append(lista[i])
             cont = cont + 1
-            lista_armazena_posi.append(cont)
+            lista_armazena_posi.append(i)
     print(listaprocura)
     print("achou", cont, "elementos")
     return cont, lista_armazena_posi
@@ -56,13 +57,13 @@ def Filtro_Idade(D):
     idade2 = int(input("Digite a idade maior: " ))
     idade1 = idade1 + 400
     idade2 = idade2 + 400
-    for i in D["IDADE"]:
+    for i in  range(len(D["IDADE"])):
         b = int(i)
         if (b >= idade1) and (b <= idade2) :
             b = b - 400
             listaprocura.append(b)
             cont = cont + 1
-            lista_armazena_posi.append(cont)
+            lista_armazena_posi.append(i)
     print(listaprocura)
     print("achou", cont, "elementos")
     return cont, lista_armazena_posi
