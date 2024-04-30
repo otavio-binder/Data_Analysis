@@ -75,7 +75,7 @@ def Filtro_Assit_Med(D):
     for i in D["ASSISTMED"]:
         if  i == '1':
             listaprocura.append(i)
-            cont = cont + 1
+            cont += 1
     print("antes da morte houveram", cont, "asstências medicas")
     return listaprocura
 
@@ -112,14 +112,16 @@ def Filtro_Estado(D):
             print(f"{key} e {value}")
             dic_orden[key] = value
     for chv in listadic:
+        if chv == '':
+            chv = 0
         listabuscadigitos.append(int(chv)) #convertendo para inteiro
     for cnt in range(len(listabuscadigitos)): #esse segundo for é necessário para pegar apenas o valor que queremos
         (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
     for chave in dic_orden.keys():
-        for cnt in listabuscadigitos:
-            if cnt == chave:
-                contador = contador + 1
-                lista_armazena_posi.append(contador) #armazenando as posicoes
+        for cnt in range(len(listabuscadigitos)):
+            if listabuscadigitos[cnt] == chave:
+                contador += 1
+                lista_armazena_posi.append(cnt) #armazenando as posicoes
     print("existem", contador ,"em", endereco)
     print("posicoes armazenadas: ", lista_armazena_posi)
     return contador, listabuscadigitos, lista_armazena_posi
@@ -153,8 +155,8 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    Filtro_Estado(D)
+    #Filtro_Estado(D)
     # Filtro_Idade(D)
     # print(D["CODMUNRES"])
     #print(Data_Frame["CODMUNRES"])
-    #Filtro_Cirurgia(D)
+    Filtro_Neoplasia(D)
