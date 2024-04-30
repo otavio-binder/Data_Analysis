@@ -106,7 +106,7 @@ def Filtro_Estado(D):
     for chv in range(len(listadic)):
         listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
     for cnt in range(len(listabuscadigitos)):
-        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
+        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000) #pegando somente os dois primeiros digitos
     for chave in dic_orden.keys():
         for cnt in range(len(listabuscadigitos)):
             if listabuscadigitos[cnt] == chave:
