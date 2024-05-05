@@ -6,5 +6,5 @@ dic_Mun = {12 : "ACRE" , 27 : "ALAGOAS", 16 : "AMAPÁ", 13 : "AMAZONAS", 29 : "B
             	11 : "RONDONIA" , 14 : "RORAIMA" , 42 : "SANTA CATARINA" , 35 : "SÃO PAULO" ,
             	28 : "SEGIPE" , 17 : "TOCANTINS"}
 
-a = dic_Mun[12]
+a = dic_Mun.items()
 print(a)
