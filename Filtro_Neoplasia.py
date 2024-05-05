@@ -109,23 +109,12 @@ def Filtro_Estado(D):
     for key, value in dic_Mun.items():
         distancia = lv(endereco, value)
         if	distancia <=2:
-<<<<<<< HEAD
-            print(f"{key} e {value}")
+            print(f"{key}e {value}")
             dic_orden[key] = value
-    for chv in listadic:
-        if chv == '':
-            chv = 0
-        listabuscadigitos.append(int(chv)) #convertendo para inteiro
-    for cnt in range(len(listabuscadigitos)): #esse segundo for é necessário para pegar apenas o valor que queremos
-        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000)
-=======
-            print(f"{i} e {j}")
-            dic_orden[i] = j
     for chv in range(len(listadic)):
         listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
     for cnt in range(len(listabuscadigitos)):
         (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000) #pegando somente os dois primeiros digitos
->>>>>>> otavio-branch
     for chave in dic_orden.keys():
         for cnt in range(len(listabuscadigitos)):
             if listabuscadigitos[cnt] == chave:
