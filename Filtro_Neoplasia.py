@@ -41,7 +41,7 @@ def Filtro_Neoplasia(D):
     lista = D[coluna]
     procurado = str(input("Digite o que quer procurar na coluna: "))
     for i in range(len(lista)):
-        if lista[i] == procurado:
+        if lv(lista[i] , procurado) <= 5:
             listaprocura.append(lista[i])
             cont = cont + 1
             lista_armazena_posi.append(i)
@@ -157,4 +157,4 @@ if __name__ == '__main__':
     # Filtro_Idade(D)
     # print(D["CODMUNRES"])
     #print(Data_Frame["CODMUNRES"])
-    Filtro_Neoplasia(D)
+    Filtro_Estado(D)
