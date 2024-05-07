@@ -111,10 +111,10 @@ def Filtro_Estado(D):
         if	distancia <=2:
             print(f"{key} e {value}")
             dic_orden[key] = value
-    for chv in listadic:
-        listabuscadigitos.append(int(chv)) #convertendo para inteiro
-    for cnt in listabuscadigitos:
-        cnt = cnt/10000 #pegando somente os dois primeiros digitos
+    for chv in range(len(listadic)):
+        listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
+    for cnt in range(len(listabuscadigitos)):
+        (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000) #pegando somente os dois primeiros digitos
     for chave in dic_orden.keys():
         for cnt in range(len(listabuscadigitos)):
             if listabuscadigitos[cnt] == chave:
@@ -122,7 +122,7 @@ def Filtro_Estado(D):
                 lista_armazena_posi.append(cnt) #armazenando as posicoes
     print("existem", contador ,"em", endereco)
     print("posicoes armazenadas: ", lista_armazena_posi)
-    return contador, listabuscadigitos, lista_armazena_posi # retornando as func
+    return contador, listabuscadigitos, lista_armazena_posi # retornando as variaveis
 
 def usaPosicao():
     teste = []
