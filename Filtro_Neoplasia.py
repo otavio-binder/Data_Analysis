@@ -109,7 +109,7 @@ def Filtro_Estado(D):
     for key, value in dic_Mun.items():
         distancia = lv(endereco, value)
         if	distancia <=2:
-            print(f"{key}e {value}")
+            print(f"{key} e {value}")
             dic_orden[key] = value
     for chv in range(len(listadic)):
         listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
@@ -122,7 +122,32 @@ def Filtro_Estado(D):
                 lista_armazena_posi.append(cnt) #armazenando as posicoes
     print("existem", contador ,"em", endereco)
     print("posicoes armazenadas: ", lista_armazena_posi)
-    return contador, listabuscadigitos, lista_armazena_posi # retornando as variaveis
+    return contador, listabuscadigitos, lista_armazena_posi
+
+def usaPosicao():
+    teste = []
+    listStoragePos = exportaPosicao()
+    key = str(input("Digite onde você quer usar a lista de posições: "))
+    keyEscolhida = D[key]
+    for i in listStoragePos:
+        teste.append(keyEscolhida[i])
+    print(teste)
+    return teste
+
+def exportaPosicao():
+    keyOrigem = str(input("Digite a coluna a ser usada: ")).upper()
+    filter = str(input("Digite o filtro a ser usado:" ))
+    listStoragePos = []
+    keyValues = D[keyOrigem]
+    print(keyValues)
+    for cnt in range(len(D[keyOrigem])):
+        if filter == keyValues[cnt]:
+            listStoragePos.append(cnt)
+    print(listStoragePos)
+    return listStoragePos
+
+
+
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
 # def Morte_Idade():
@@ -153,8 +178,5 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    #Filtro_Estado(D)
-    # Filtro_Idade(D)
-    # print(D["CODMUNRES"])
-    #print(Data_Frame["CODMUNRES"])
     Filtro_Estado(D)
+    #usaPosicao()
