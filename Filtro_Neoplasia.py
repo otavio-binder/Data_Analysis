@@ -122,7 +122,7 @@ def Filtro_Estado(D):
                 lista_armazena_posi.append(cnt) #armazenando as posicoes
     print("existem", contador ,"em", endereco)
     print("posicoes armazenadas: ", lista_armazena_posi)
-    return contador, listabuscadigitos, lista_armazena_posi
+    return contador, listabuscadigitos, lista_armazena_posi # retornando as func
 
 def usaPosicao():
     teste = []
