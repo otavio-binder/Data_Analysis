@@ -171,6 +171,20 @@ def exportaPosicao():
     print(listStoragePos)
     return listStoragePos
 
+# Essa função recebe uma coluna e um valor, e retorna as linhas as quais os valores na coluna 
+# escolhida sao iguais ao valor escolhido
+def filtroDataframe():
+    coluna, filtro = input("exemplo: se voce quer linhas onde rows[8] == 2, digite: 8 2. ").split()
+    coluna = int(coluna)
+    filtro = int(filtro)
+    df = []
+    for rows in df_exemplopronto.values.tolist():
+        if rows[coluna] == filtro: 
+            df.append(rows)
+    tabela = pd.DataFrame(df)
+    print(tabela)
+    return tabela
+
 
 
 
@@ -198,10 +212,9 @@ if __name__ == '__main__':
     for k in range(0, len(contents)):
         L = contents[k].split(';')
         file_information.append(L)
-    Data_Frame = pd.read_csv("exemplopronto.csv", sep = ";")
+    df_exemplopronto = pd.read_csv("exemplopronto.csv", sep = ";")
     M = np.array(file_information)
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    Filtro_Estado(D)
-    #usaPosicao()
+    filtroDataframe()
