@@ -96,7 +96,6 @@ def Filtro_Estado(D):
     lista_armazena_posi = []
     procuradic = input("Digite o que deseja procurar(ex: CODMUNRES): ").upper()
     listadic = D[procuradic]
-    print(listadic)
     dic_Mun = {12 : "ACRE" , 27 : "ALAGOAS", 16 : "AMAPÁ", 13 : "AMAZONAS", 29 : "BAHIA",
             	23 : "CEARÁ", 53 : "DF", 32 : "ESPÍRITO SANTO", 52 : "GOIÁS",
             	21 : "MARANHÃO", 51 : "MATO GROSSO", 50 : "MATO GROSSO DO SUL", 
@@ -112,7 +111,10 @@ def Filtro_Estado(D):
             print(f"{key} e {value}")
             dic_orden[key] = value
     for chv in range(len(listadic)):
-        listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
+        if listadic[chv] == '':
+            listabuscadigitos.append(100) #apenas um número para poder salvar a posição do lugar nulo
+        else:
+            listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
     for cnt in range(len(listabuscadigitos)):
         (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000) #pegando somente os dois primeiros digitos
     for chave in dic_orden.keys():
@@ -124,6 +126,7 @@ def Filtro_Estado(D):
     print("posicoes armazenadas: ", lista_armazena_posi)
     return contador, listabuscadigitos, lista_armazena_posi # retornando as variaveis
 
+#Filtros usando dataframe
 def usaPosicao():
     teste = []
     listStoragePos = exportaPosicao()
@@ -136,32 +139,7 @@ def usaPosicao():
 
 def exportaPosicao():
     keyOrigem = str(input("Digite a coluna a ser usada: ")).upper()
-    filter = str(input("Digite o filtro a ser usado:" ))
-    listStoragePos = []
-    keyValues = D[keyOrigem]
-    print(keyValues)
-    for cnt in range(len(D[keyOrigem])):
-        if filter == keyValues[cnt]:
-            listStoragePos.append(cnt)
-    print(listStoragePos)
-    return listStoragePos
-
-
-
-
-def usaPosicao():
-    teste = []
-    listStoragePos = exportaPosicao()
-    key = str(input("Digite onde você quer usar a lista de posições: "))
-    keyEscolhida = D[key]
-    for i in listStoragePos:
-        teste.append(keyEscolhida[i])
-    print(teste)
-    return teste
-
-def exportaPosicao():
-    keyOrigem = str(input("Digite a coluna a ser usada: ")).upper()
-    filter = str(input("Digite o filtro a ser usado:" ))
+    filter = str(input("Digite o filtro a ser usado: " ))
     listStoragePos = []
     keyValues = D[keyOrigem]
     print(keyValues)
@@ -217,4 +195,4 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    filtroDataframe()
+    Filtro_Estado(D)
