@@ -127,7 +127,8 @@ def Filtro_Estado(D):
     print("posicoes armazenadas: ", lista_armazena_posi)
     return contador, listabuscadigitos, lista_armazena_posi # retornando as variaveis
 
-#Filtros usando dataframe
+# Essa função usa as posições dos dados que foram filtrados na função exportaPosicao()
+# e aplica ela em outra cluna
 def usaPosicao():
     teste = []
     listStoragePos = exportaPosicao()
@@ -138,6 +139,8 @@ def usaPosicao():
     print(teste)
     return teste
 
+# Essa funcao recebe uma coluna e um filtro e retorna uma lista com as posicoes
+# que aquele filtro aparece na coluna
 def exportaPosicao():
     keyOrigem = str(input("Digite a coluna a ser usada: ")).upper()
     filter = str(input("Digite o filtro a ser usado: " ))
