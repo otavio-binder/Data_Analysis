@@ -33,6 +33,7 @@ def remove_quotes_each_field(M):
             N[i, j] = L[1 : len(L) - 1]
     return N
 
+#Filtros pequenos para auxiliar o principal Filtro_Estado
 def Filtro_Neoplasia(D):
     listaprocura = []
     cont = 0
