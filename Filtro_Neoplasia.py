@@ -61,13 +61,13 @@ def Filtro_Idade(D):
     for i in  range(len(D["IDADE"])):
         b = int(i)
         if (b >= idade1) and (b <= idade2) :
-            b = b - 400
+            b = b -400
             listaprocura.append(b)
             cont = cont + 1
             lista_armazena_posi.append(i)
     print(listaprocura)
     print("achou", cont, "elementos")
-    return cont, lista_armazena_posi
+    return cont, lista_armazena_posi, listaprocura
 
 
 def Filtro_Assit_Med(D):
@@ -125,7 +125,7 @@ def Filtro_Estado(D):
                 lista_armazena_posi.append(cnt) #armazenando as posicoes
     print("existem", contador ,"em", endereco)
     print("posicoes armazenadas: ", lista_armazena_posi)
-    return contador, listabuscadigitos, lista_armazena_posi # retornando as variaveis
+    return lista_armazena_posi # retornando as variaveis
 
 # Essa função usa as posições dos dados que foram filtrados na função exportaPosicao()
 # e aplica ela em outra cluna
@@ -137,6 +137,20 @@ def usaPosicao():
     for i in listStoragePos:
         teste.append(keyEscolhida[i])
     print(teste)
+    return teste
+
+#Um funcao que tem baseado em pegar o valor retonardo pelo filtro estado para achar as posições de uma outra key do dicionário
+def usaPosicao_Fitro_Estado():
+    teste = []
+    cnt = 0
+    listStoragePos = Filtro_Estado(D)
+    key = input("Digite onde você quer usar a lista de posições: ")
+    keyEscolhida = D[key]
+    for i in listStoragePos:
+        teste.append(keyEscolhida[i])
+        cnt += 1
+    print(teste)
+    print("Contou ",cnt," elementos")
     return teste
 
 # Essa funcao recebe uma coluna e um filtro e retorna uma lista com as posicoes
@@ -167,7 +181,19 @@ def filtroDataframe():
     print(tabela)
     return tabela
 
-
+#Função igual a anterior, porém especifico para sempre pegar a idade e armazenar as outras infos
+def filtroDataframe_Idade():
+    filtro1 = int(input("digite a menor idade que deseja buscar: " ))
+    filtro2 = int(input("digite a maior idade que deseja buscar: " ))
+    filtro1 = filtro1 + 400
+    filtro2 = filtro2 + 400
+    df = []
+    for rows in df_exemplopronto.values.tolist():
+        if (rows[7] <= filtro2) and (rows[7] >= filtro1): #7 porque é a coluna da idade
+            df.append(rows)
+    tabela = pd.DataFrame(df)
+    print(tabela)
+    return tabela
 
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
@@ -199,4 +225,4 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    Filtro_Estado(D)
+    filtroDataframe_Idade()
