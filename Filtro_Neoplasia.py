@@ -195,6 +195,15 @@ def filtroDataframe_Idade():
     print(tabela)
     return tabela
 
+def filtroUsandoPandas():
+    coluna = str(input("Digite o nome da coluna (ex: NATURAL, CODMNRES): ")).upper()
+    valor_especifico = int(input("Digite o valor especifico: "))
+    filtro = (df_exemplopronto[coluna] == valor_especifico)
+    df_filtrado = df_exemplopronto[filtro]
+    print(df_filtrado)
+    return df_filtrado
+
+
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
 # def Morte_Idade():
@@ -225,4 +234,4 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    filtroDataframe_Idade()
+    filtroUsandoPandas()
