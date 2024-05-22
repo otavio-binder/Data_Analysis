@@ -7,13 +7,13 @@ from Levenshtein import distance as lv
 import pandas as pd
 
 #Essa função pega uma string e corta o primeiro e o ultimo caractere
-def tablefield2int(s):  
+def tablefield2int(s: str):  
     s = s[1 : len(s) - 1]
     i = int(s)
     return i
 
 #Essa função pega um dataframe e o transforma em um dicionário
-def table2dic(M):
+def table2dic(M: np.ndarray):
     D = {}
     keys = M[0, :]
     for k in range(0, len(keys)):
@@ -25,7 +25,7 @@ def table2dic(M):
     return D
 
 
-def remove_quotes_each_field(M):
+def remove_quotes_each_field(M: np.ndarray):
     N = M
     for i in range(0, M.shape[0]):
         for j in range(0, M.shape[1]):
@@ -34,7 +34,7 @@ def remove_quotes_each_field(M):
     return N
 
 #Filtros pequenos para auxiliar o principal Filtro_Estado
-def Filtro_Neoplasia(D):
+def Filtro_Neoplasias(D: dict):
     listaprocura = []
     cont = 0
     lista_armazena_posi = []
@@ -50,7 +50,7 @@ def Filtro_Neoplasia(D):
     print("achou", cont, "elementos")
     return cont, lista_armazena_posi
 
-def Filtro_Idade(D):
+def Filtro_Idade(D: dict):
     listaprocura = []
     cont = 0
     lista_armazena_posi = []
@@ -70,7 +70,7 @@ def Filtro_Idade(D):
     return cont, lista_armazena_posi, listaprocura
 
 
-def Filtro_Assit_Med(D):
+def Filtro_Assit_Med(D: dict):
     listaprocura = []
     cont = 0
     for i in D["ASSISTMED"]:
@@ -80,7 +80,7 @@ def Filtro_Assit_Med(D):
     print("antes da morte houveram", cont, "asstências medicas")
     return listaprocura
 
-def Filtro_Cirurgia(D):
+def Filtro_Cirurgia(D: dict):
     listaprocura0 = []
     cont = 0
     aux = int(input("digite 1 se quer saber se passou por cirurgia, ou 2 se não passou por cirurgia: "))
@@ -91,7 +91,7 @@ def Filtro_Cirurgia(D):
     print("resultado obtido", cont)
 
 #Essa função recebe o nome de um estado e retorna a chave dele
-def Filtro_Estado(D):
+def Filtro_Estado(D: dict):
     listabuscadigitos = []
     contador = 0
     lista_armazena_posi = []
@@ -129,7 +129,7 @@ def Filtro_Estado(D):
 
 # Essa função usa as posições dos dados que foram filtrados na função exportaPosicao()
 # e aplica ela em outra cluna
-def usaPosicao():
+def usaPosicao(D: dict):
     teste = []
     listStoragePos = exportaPosicao()
     key = str(input("Digite onde você quer usar a lista de posições: "))
@@ -140,7 +140,7 @@ def usaPosicao():
     return teste
 
 #Um funcao que tem baseado em pegar o valor retonardo pelo filtro estado para achar as posições de uma outra key do dicionário
-def usaPosicao_Fitro_Estado():
+def usaPosicao_Fitro_Estado(D: dict):
     teste = []
     cnt = 0
     listStoragePos = Filtro_Estado(D)
@@ -155,7 +155,7 @@ def usaPosicao_Fitro_Estado():
 
 # Essa funcao recebe uma coluna e um filtro e retorna uma lista com as posicoes
 # que aquele filtro aparece na coluna
-def exportaPosicao():
+def exportaPosicao(D: dict):
     keyOrigem = str(input("Digite a coluna a ser usada: ")).upper()
     filter = str(input("Digite o filtro a ser usado: " ))
     listStoragePos = []
@@ -169,41 +169,41 @@ def exportaPosicao():
 
 # Essa função recebe uma coluna e um valor, e retorna as linhas as quais os valores na coluna 
 # escolhida sao iguais ao valor escolhido
-def filtroDataframe():
+def filtroDataframe(df: pd.DataFrame):
     coluna, filtro = input("exemplo: se voce quer linhas onde rows[8] == 2, digite: 8 2. ").split()
     coluna = int(coluna)
     filtro = int(filtro)
-    df = []
-    for rows in df_exemplopronto.values.tolist():
+    df_vazio = []
+    for rows in df.values.tolist():
         if rows[coluna] == filtro: 
-            df.append(rows)
-    tabela = pd.DataFrame(df)
+            df_vazio.append(rows)
+    tabela = pd.DataFrame(df_vazio)
     print(tabela)
     return tabela
 
 #Função igual a anterior, porém especifico para sempre pegar a idade e armazenar as outras infos
-def filtroDataframe_Idade():
+def filtroDataframe_Idade(dataframe: pd.DataFrame):
     filtro1 = int(input("digite a menor idade que deseja buscar: " ))
     filtro2 = int(input("digite a maior idade que deseja buscar: " ))
     filtro1 = filtro1 + 400
     filtro2 = filtro2 + 400
     df = []
-    for rows in df_exemplopronto.values.tolist():
+    for rows in dataframe.values.tolist():
         if (rows[7] <= filtro2) and (rows[7] >= filtro1): #7 porque é a coluna da idade
             df.append(rows)
     tabela = pd.DataFrame(df)
     print(tabela)
     return tabela
 
-def filtroUsandoPandas():
+def filtroUsandoPandas(df: pd.DataFrame):
     coluna = str(input("Digite o nome da coluna (ex: NATURAL, CODMNRES): ")).upper()
     valor_especifico = int(input("Digite o valor especifico: "))
-    filtro = (df_exemplopronto[coluna] == valor_especifico)
-    df_filtrado = df_exemplopronto[filtro]
+    filtro = (df[coluna] == valor_especifico)
+    df_filtrado = df[filtro]
     print(df_filtrado)
     return df_filtrado
 
-
+# def exportarColuna()
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
 # def Morte_Idade():
@@ -234,4 +234,5 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    filtroUsandoPandas()
+    usaPosicao_Fitro_Estado(D)
+    
