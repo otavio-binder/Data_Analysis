@@ -37,6 +37,8 @@ def remove_quotes_each_field(M):
 def Filtro_Neoplasia(D):
     listaprocura = []
     cont = 0
+    dic_Neoplasia= {"Neoplasia de colon": "C18", "Melanoma Maligno" : "C43", "Outras Neoplasias de pele" : "C44",
+                    "Neoplasia de Pulmao": "C32" "C33" "C34"}
     lista_armazena_posi = []
     coluna = str(input("Digite a coluna: "))
     lista = D[coluna]
@@ -195,6 +197,32 @@ def filtroDataframe_Idade():
     print(tabela)
     return tabela
 
+def Filtrodataframe_Neoplasia():
+    dic_Neoplasia= {"C18": "Neoplasia de colon", "C43" : "Melanoma Maligno", "C44" : "Outras Neoplasias de pele",
+                    "C32" "C33" "C34": "Neoplasia de Pulmao"}
+    dic_auxNeo = dict()
+    dic_auxNeo_lista = dict()
+    dic_Listas_Neo = {40: "LINHAA", 41 : "LINHAB", 42 : "LINHAC"}
+    lista_def = []
+    procurado = str(input("Digite o que quer procurar na coluna(Ex: Neoplasia de colon): ")) 
+    procurado2 = str(input("Digite qual linha deseja procurar(Ex: LINHAA, LINHAB ou LINHAC): ")).upper()
+    for key, value in dic_Neoplasia.items():
+        distancia = lv(procurado, value)
+        if	distancia <=3:
+            print(f"{key} e {value}") 
+            dic_auxNeo[key] = value
+    print(dic_auxNeo)
+    for key2, value2 in dic_Listas_Neo.items():
+        if procurado2 == value2:
+            print(f"{key2} e {value2}") 
+            dic_auxNeo_lista[key2] = value2
+    print(dic_auxNeo_lista)
+    for rows in df_exemplopronto.values.tolist():
+        if(rows[key2] == key):
+            lista_def.append(key)
+    tabela = pd.DataFrame(lista_def)
+    print(tabela)
+    return tabela
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
 # def Morte_Idade():
@@ -225,4 +253,5 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    filtroDataframe_Idade()
+    Filtrodataframe_Neoplasia()
+    #Filtro_Estado(D)
