@@ -220,9 +220,10 @@ def Filtrodataframe_Neoplasia():
     for rows in df_exemplopronto.values.tolist():
         if(rows[key2] == key):
             lista_def.append(key)
-    tabela = pd.DataFrame(list a_def)
+    tabela = pd.DataFrame(lista_def)
     print(tabela)
     return tabela
+
 def filtroUsandoPandas(df: pd.DataFrame):
     coluna = str(input("Digite o nome da coluna (ex: NATURAL, CODMNRES): ")).upper()
     valor_especifico = int(input("Digite o valor especifico: "))
@@ -262,3 +263,4 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
+
