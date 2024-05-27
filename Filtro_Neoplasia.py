@@ -197,7 +197,6 @@ def filtroDataframe_Idade(dataframe: pd.DataFrame):
     print(tabela)
     return tabela
 
-<<<<<<< HEAD
 def Filtrodataframe_Neoplasia():
     dic_Neoplasia= {"C18": "Neoplasia de colon", "C43" : "Melanoma Maligno", "C44" : "Outras Neoplasias de pele",
                     "C32" "C33" "C34": "Neoplasia de Pulmao"}
@@ -221,10 +220,9 @@ def Filtrodataframe_Neoplasia():
     for rows in df_exemplopronto.values.tolist():
         if(rows[key2] == key):
             lista_def.append(key)
-    tabela = pd.DataFrame(lista_def)
+    tabela = pd.DataFrame(list a_def)
     print(tabela)
     return tabela
-=======
 def filtroUsandoPandas(df: pd.DataFrame):
     coluna = str(input("Digite o nome da coluna (ex: NATURAL, CODMNRES): ")).upper()
     valor_especifico = int(input("Digite o valor especifico: "))
@@ -234,7 +232,6 @@ def filtroUsandoPandas(df: pd.DataFrame):
     return df_filtrado
 
 # def exportarColuna()
->>>>>>> 9b3a497401518c304d1d5612d51dd08b627d3ad9
 
 #Essa função pede um estado e retorna o tipo de morte e a idade de todos os individuos
 # def Morte_Idade():
@@ -265,10 +262,3 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-<<<<<<< HEAD
-    Filtrodataframe_Neoplasia()
-    #Filtro_Estado(D)
-=======
-    usaPosicao_Fitro_Estado(D)
-    
->>>>>>> 9b3a497401518c304d1d5612d51dd08b627d3ad9
