@@ -197,36 +197,29 @@ def filtroDataframe_Idade(dataframe: pd.DataFrame):
     print(tabela)
     return tabela
 
-def Filtrodataframe_Neoplasia():
-    dic_Neoplasia= {"C18": "Neoplasia de colon", "C43" : "Melanoma Maligno", "C44" : "Outras Neoplasias de pele",
-                    "C32" "C33" "C34": "Neoplasia de Pulmao"}
-    dic_auxNeo = dict()
-    dic_auxNeo_lista = dict()
+def Filtrodataframe_Neoplasia(data_f: pd.DataFrame):
+    dic_Neoplasia= {"C18" "*C18X": "Neoplasia de colon", "C43" "*C43X" : "Melanoma Maligno", "C44" "*C44X": "Outras Neoplasias de pele",
+                    "C32" "C33" "C34" "*C33X": "Neoplasia de Pulmao", "*R571" : "teste"}
     dic_Listas_Neo = {40: "LINHAA", 41 : "LINHAB", 42 : "LINHAC"}
-    lista_def = []
     procurado = str(input("Digite o que quer procurar na coluna(Ex: Neoplasia de colon): ")) 
-    procurado2 = str(input("Digite qual linha deseja procurar(Ex: LINHAA, LINHAB ou LINHAC): ")).upper()
+    procurado2 = input("Digite qual linha deseja procurar(Ex: LINHAA, LINHAB ou LINHAC): ").upper()
     for key, value in dic_Neoplasia.items():
         distancia = lv(procurado, value)
-        if	distancia <=3:
-            print(f"{key} e {value}") 
-            dic_auxNeo[key] = value
-    print(dic_auxNeo)
+        if	distancia <=2:
+            print(f"{key} e {value}")
     for key2, value2 in dic_Listas_Neo.items():
         if procurado2 == value2:
-            print(f"{key2} e {value2}") 
-            dic_auxNeo_lista[key2] = value2
-    print(dic_auxNeo_lista)
-    for rows in df_exemplopronto.values.tolist():
-        if(rows[key2] == key):
-            lista_def.append(key)
-    tabela = pd.DataFrame(lista_def)
-    print(tabela)
-    return tabela
+            print(f"{key2} e {value2}")
+    resultados_do_filtro = (data_f[procurado2] == key)
+    data_f_filtrado = data_f[resultados_do_filtro]
+    print(data_f_filtrado)
+    return data_f_filtrado
 
 def filtroUsandoPandas(df: pd.DataFrame):
     coluna = str(input("Digite o nome da coluna (ex: NATURAL, CODMNRES): ")).upper()
-    valor_especifico = int(input("Digite o valor especifico: "))
+    valor_especifico = input("Digite o valor especifico: ")
+    if valor_especifico.isdigit():
+        valor_especifico = int(valor_especifico)
     filtro = (df[coluna] == valor_especifico)
     df_filtrado = df[filtro]
     print(df_filtrado)
@@ -263,4 +256,5 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-
+    Filtrodataframe_Neoplasia(df_exemplopronto)
+    #filtroUsandoPandas(df_exemplopronto)
