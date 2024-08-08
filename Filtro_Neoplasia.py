@@ -60,8 +60,8 @@ def Filtro_Idade(D: dict):
     idade2 = int(input("Digite a idade maior: " ))
     idade1 = idade1 + 400
     idade2 = idade2 + 400
-    for i in  range(len(D["IDADE"])):
-        b = int(i)
+    for i in range(len(D["IDADE"])):
+        b = int(D["IDADE"][i])
         if (b >= idade1) and (b <= idade2) :
             b = b -400
             listaprocura.append(b)
@@ -256,5 +256,5 @@ if __name__ == '__main__':
     M = remove_quotes_each_field(M)
     N = M[:, [1, 7]]
     D = table2dic(M)
-    Filtrodataframe_Neoplasia(df_exemplopronto)
+    Filtro_Idade(df_exemplopronto)
     #filtroUsandoPandas(df_exemplopronto)
