@@ -1,8 +1,9 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from sys import argv
-from Levenshtein import distance as lv 
+import Levenshtein as lv
 import pandas as pd
+import re
 
 #Essa função pega uma string e corta o primeiro e o ultimo caractere
 def tablefield2int(s: str):  
@@ -33,19 +34,46 @@ def remove_quotes_each_field(M: np.ndarray):
 def Filtro_Neoplasias(D:list):
     listaprocura = []
     cont = 0
-    dic_Neoplasia= {"Neoplasia de colon": "C18", "Melanoma Maligno" : "C43", "Outras Neoplasias de pele" : "C44",
-                    "Neoplasia de Pulmao": "C32" "C33" "C34"}
+    dic_Neoplasia= {"Neoplasia de colon": "*C18X", "Melanoma Maligno" : "r'^\*C43\d?X$'", "Outras Neoplasias de pele" : "*C44x",
+                    "Neoplasia de Pulmao": "*C34X"}
     lista_armazena_posi = []
-    #coluna = str(input("Digite a coluna: "))
-    #lista = D[coluna]
     procurado = str(input("Digite o que quer procurar na coluna: "))
     for i in range(len(D)):
-        if (D[i] == procurado) :
-            listaprocura.append(D[i])
+        value = str(D[i])
+        dist = lv.distance(procurado, value)
+        if (dist <= 1):
+            listaprocura.append(value)
             cont = cont + 1
             lista_armazena_posi.append(i)
     print(listaprocura)
     print("achou", cont, "elementos")
+    return cont, lista_armazena_posi
+
+def Filtro_Neoplasias2(D: list):
+    listaprocura = []
+    cont = 0
+    # Definindo os padrões de neoplasias usando expressões regulares
+    dic_Neoplasia = {
+        "Neoplasia de colon": r"^\*C18\d?X$",
+        "Melanoma Maligno": r"^\*C43\d?X$",
+        "Outras Neoplasias de pele": r"^\*C44\d?X$",
+        "Neoplasia de Pulmao": r"^\*C34\d?X$"
+    }
+    lista_armazena_posi = []
+    procurado = str(input("Digite o que quer procurar na coluna: "))
+    for i in range(len(D)):
+        value = str(D[i])
+        # Comparar utilizando regex para ver se o valor corresponde ao padrão
+        for nome, padrao in dic_Neoplasia.items():
+            if re.match(padrao, procurado):
+                dist = lv.distance(procurado, value)
+                if dist <= 1:
+                    listaprocura.append(value)
+                    cont += 1
+                    lista_armazena_posi.append(i)
+                break
+    print(listaprocura)
+    print("Achou", cont, "elementos")
     return cont, lista_armazena_posi
 
 #Essa função recebe o nome de um estado e retorna a chave dele
@@ -60,12 +88,12 @@ def Filtro_Estado(D: dict):
             	21 : "MARANHÃO", 51 : "MATO GROSSO", 50 : "MATO GROSSO DO SUL", 
             	31 : "MINAS GERAIS" , 15 : "PARÁ" , 25 : "PARAÍBA" , 41 : "PARANÁ" , 26 : "PERNAMBUCO",
             	22 : "PIAUÍ" , 33 : "RIO DE JANEIRO" , 24 : "RIO GRANDE DO NORTE" , 43 : "RIO GRANDE DO SUL" , 
-            	11 : "RONDONIA" , 14 : "RORAIMA" , 42 : "SANTA CATARINA" , 35 : "SÃO PAULO" ,
-            	28 : "SEGIPE" , 17 : "TOCANTINS"}
+            	11 : "RONDONIA" , 14 : "RORAIMA" , 42 : "SANTA CATARINA" , 35 : "SAO PAULO" ,
+            	28 : "SERGIPE" , 17 : "TOCANTINS"}
     endereco = input('Digite o nome do estado: ').upper()
     dic_orden = dict()
     for key, value in dic_Mun.items():
-        distancia = lv(endereco, value)
+        distancia = lv.distance(endereco, value)
         if	distancia <=2:
             print(f"{key} e {value}")
             dic_orden[key] = value
@@ -119,4 +147,4 @@ if __name__ == '__main__':
     N = M[:, [1, 7]]
     D = table2dic(M)
     lista_neo=usaPosicao_Fitro_Estado(df_exemplopronto)
-    Filtro_Neoplasias(lista_neo)
+    Filtro_Neoplasias2(lista_neo)
