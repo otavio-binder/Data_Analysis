@@ -52,6 +52,33 @@ def Filtro_Neoplasias(D:list):
     print("achou", cont, "elementos")
     return cont, lista_armazena_posi
 
+def Filtro_Neoplasias2(D: list):
+    listaprocura = []
+    cont = 0
+    # Definindo os padrões de neoplasias usando expressões regulares
+    dic_Neoplasia = {
+        "Neoplasia de colon": r"^\*C18\d?X$",
+        "Melanoma Maligno": r"^\*C43\d?X$",
+        "Outras Neoplasias de pele": r"^\*C44\d?X$",
+        "Neoplasia de Pulmao": r"^\*C34\d?X$"
+    }
+    lista_armazena_posi = []
+    procurado = str(input("Digite o que quer procurar na coluna: "))
+    for i in range(len(D)):
+        value = str(D[i])
+        # Comparar utilizando regex para ver se o valor corresponde ao padrão
+        for nome, padrao in dic_Neoplasia.items():
+            if re.match(padrao, procurado):
+                dist = lv.distance(procurado, value)
+                if dist <= 1:
+                    listaprocura.append(value)
+                    cont += 1
+                    lista_armazena_posi.append(i)
+                break
+    print(listaprocura)
+    print("Achou", cont, "elementos")
+    return cont, lista_armazena_posi
+
 def Filtro_Idade(D: dict):
     listaprocura = []
     cont = 0
