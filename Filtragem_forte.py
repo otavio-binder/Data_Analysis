@@ -35,23 +35,23 @@ def remove_quotes_each_field(M: np.ndarray):
     return N
 
 def Filtro_Idade(D: dict):
-    listaprocura = []
-    cont = 0
-    lista_armazena_posi = []
-    idade1 = int(input("Digite a idade menor: " ))
-    idade2 = int(input("Digite a idade maior: " ))
+    listaprocura = [] #criando lista vazia para armazenar os valores desejados
+    cont = 0 # contador
+    lista_armazena_posi = [] #lista para armazerna a posicao
+    idade1 = int(input("Digite a idade menor: " )) #input da menor idade que deseja buscar
+    idade2 = int(input("Digite a idade maior: " )) #input da maior idade que deseja buscar
     idade1 = idade1 + 400
-    idade2 = idade2 + 400
-    for i in range(len(D["IDADE"])):
-        b = int(D["IDADE"][i])
-        if (b >= idade1) and (b <= idade2) :
+    idade2 = idade2 + 400 # soma 400 em ambas pois nos dados o 4 representa a idade em anos
+    for i in range(len(D["IDADE"])): #percorrendo a coluna da IDADE
+        b = int(D["IDADE"][i]) # transformando para inteiro para poder comparar
+        if (b >= idade1) and (b <= idade2) : # se a idade estiver entre os dois valores, armazena tal
             b = b -400
-            listaprocura.append(b)
-            cont = cont + 1
-            lista_armazena_posi.append(i)
-    print(listaprocura)
-    print("achou", cont, "elementos")
-    return lista_armazena_posi
+            listaprocura.append(b) #armazenando a idade
+            cont = cont + 1 #incrementando o contador
+            lista_armazena_posi.append(i) #armazenando a posicao
+    print(listaprocura) #imprime a lista das idades encontradas
+    print("achou", cont, "elementos") # quantos elementos foram encontrados
+    return lista_armazena_posi # retorna a lista de posicoes
 
 def Filtro_Neoplasias(D:list):
     listaprocura = []
@@ -69,15 +69,15 @@ def Filtro_Neoplasias(D:list):
             lista_armazena_posi.append(i)
     print(listaprocura)
     print("achou", cont, "elementos")
-    return cont, lista_armazena_posi
+    return cont
 
 
 #Essa função recebe o nome de um estado e retorna a chave dele
 def Filtro_Estado(D: dict):
-    listabuscadigitos = []
-    contador = 0
-    lista_armazena_posi = []
-    procuradic = input("Digite o que deseja procurar(ex: CODMUNRES): ").upper()
+    listabuscadigitos = [] #criando lista vazia para armazenar os valores desejados
+    contador = 0 # contador
+    lista_armazena_posi = [] #lista que armazena a posicao
+    procuradic = input("Digite o que deseja procurar(ex: CODMUNRES): ").upper() #selecionando a coluna onde vai procurar
     listadic = D[procuradic]
     dic_Mun = {12 : "ACRE" , 27 : "ALAGOAS", 16 : "AMAPÁ", 13 : "AMAZONAS", 29 : "BAHIA",
             	23 : "CEARÁ", 53 : "DF", 32 : "ESPÍRITO SANTO", 52 : "GOIÁS",
@@ -85,27 +85,27 @@ def Filtro_Estado(D: dict):
             	31 : "MINAS GERAIS" , 15 : "PARÁ" , 25 : "PARAÍBA" , 41 : "PARANÁ" , 26 : "PERNAMBUCO",
             	22 : "PIAUÍ" , 33 : "RIO DE JANEIRO" , 24 : "RIO GRANDE DO NORTE" , 43 : "RIO GRANDE DO SUL" , 
             	11 : "RONDONIA" , 14 : "RORAIMA" , 42 : "SANTA CATARINA" , 35 : "SAO PAULO" ,
-            	28 : "SERGIPE" , 17 : "TOCANTINS"}
-    endereco = input('Digite o nome do estado: ').upper()
-    dic_orden = dict()
+            	28 : "SERGIPE" , 17 : "TOCANTINS"} #dicionario com todos os estados
+    endereco = input('Digite o nome do estado: ').upper() #digitar o nome do estado
+    dic_orden = dict() #criacao de um novo dicionario
     for key, value in dic_Mun.items():
-        distancia = lv.distance(endereco, value)
+        distancia = lv.distance(endereco, value) #se digitar errado existe um parametro que verifica o que o usuario tentou digitar
         if	distancia <=2:
-            print(f"{key} e {value}")
-            dic_orden[key] = value
+            print(f"{key} e {value}") #printa os valores
+            dic_orden[key] = value #armazena na chave do novo dic no o valor do div_Mun
     for chv in range(len(listadic)):
-        if listadic[chv] == '':
-            listabuscadigitos.append(100) #apenas um número para poder salvar a posição do lugar nulo
+        if listadic[chv] == '': #verifica se o valor nao esta vazio
+            listabuscadigitos.append(100) #apenas um número para poder salvar a posição do lugar nulo 
         else:
             listabuscadigitos.append(int(listadic[chv])) #convertendo para inteiro
     for cnt in range(len(listabuscadigitos)):
         (listabuscadigitos[cnt]) = int(listabuscadigitos[cnt]/10000) #pegando somente os dois primeiros digitos
     for chave in dic_orden.keys():
         for cnt in range(len(listabuscadigitos)):
-            if listabuscadigitos[cnt] == chave:
-                contador += 1
+            if listabuscadigitos[cnt] == chave: #se for igual ao valor procurado, armazena na lista
+                contador += 1 #incrementa o contador
                 lista_armazena_posi.append(cnt) #armazenando as posicoes
-    print("existem", contador ,"em", endereco)
+    print("existem", contador ,"em", endereco) #fala aonde o estado e quanto encontrou
     print("posicoes armazenadas: ", lista_armazena_posi)
     return lista_armazena_posi # retornando as variaveis
 
@@ -123,24 +123,57 @@ def usaPosicao(D: dict, function):
     print("Contou ",cnt," elementos")
     return teste
 
-if __name__ == '__main__':
-    #Verificando o arquivo
-    if len(argv) >= 2:
-        filename  = argv[1]  #verifica se o arquivo nao esta vazio
-    else:
-        filename = "exemplopronto.csv"
-    fid = open(filename , "r") #abrindo o arquivo
-    contents = fid.read() #lendo o arquivo e salvando em contents
-    fid.close() #fechando o arquivo
-    file_information = [] 
-    contents = contents.split('\n') # separa contents por final de string
-    for k in range(0, len(contents)):
-        L = contents[k].split(';') #separando as colunas por ';'
-        file_information.append(L)
-    df_exemplopronto = pd.read_csv("exemplopronto.csv", sep = ";") #aramazenando essas informacoes e definindo um separador
-    M = np.array(file_information) #criando uma matriz na numpy do arquivo passado
-    M = remove_quotes_each_field(M) #funcao que remove aspas
-    N = M[:, [1, 7]]
-    D = table2dic(M) #convertando para um dicionario, onde a primeira linha e a chave e o resto das linha e valor
-    lista_neo=usaPosicao(df_exemplopronto, Filtro_Idade(D))
-    Filtro_Neoplasias(lista_neo)
+
+#Funçao para plotar grafico:
+def plot_graph(cancer_pulmao, cancer_colon, cancer_pele):
+
+    #Anos
+    labels = ['2018', '2019', '2020', '2021', '2022']
+    x = np.arange(len(labels))  # posição dos rótulos
+
+    width = 0.25 # Largura das barras
+    # Criar as barras
+    fig, ax = plt.subplots()
+    bar1 = ax.bar(x - width, cancer_pulmao, width, label='Câncer de Pulmão')
+    bar2 = ax.bar(x, cancer_colon, width, label='Câncer de Cólon')
+    bar3 = ax.bar(x + width, cancer_pele, width, label='Câncer de Pele')
+    # Adicionar rótulos, título e legenda
+    ax.set_xlabel('Ano')
+    ax.set_ylabel('Casos')
+    ax.set_title('Incidência de diferentes tipos de câncer ao longo dos anos')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    # Mostrar o gráfico
+    plt.show()
+
+
+def prep_csv():
+    if __name__ == '__main__':
+        #Verificando o arquivo
+        if len(argv) >= 2:
+            filename  = argv[1]  #verifica se o arquivo nao esta vazio
+        else:
+            filename = "exemplopronto.csv"
+        fid = open(filename , "r") #abrindo o arquivo
+        contents = fid.read() #lendo o arquivo e salvando em contents
+        fid.close() #fechando o arquivo
+        file_information = [] 
+        contents = contents.split('\n') # separa contents por final de string
+        for k in range(0, len(contents)):
+            L = contents[k].split(';') #separando as colunas por ';'
+            file_information.append(L)
+        arqv = pd.read_csv("exemplopronto.csv", sep = ";") #aramazenando essas informacoes e definindo um separador
+        M = np.array(file_information) #criando uma matriz na numpy do arquivo passado
+        M = remove_quotes_each_field(M) #funcao que remove aspas
+        N = M[:, [1, 7]]
+        D = table2dic(M) #convertando para um dicionario, onde a primeira linha e a chave e o resto das linha e valor
+        return D, arqv
+
+D, arqv= prep_csv()
+lista_neo = usaPosicao(arqv, Filtro_Idade(D))
+cancer_pulmao = Filtro_Neoplasias(lista_neo)
+cancer_colon= Filtro_Neoplasias(lista_neo)
+cancer_pele = Filtro_Neoplasias(lista_neo)
+plot_graph(cancer_pulmao, cancer_colon, cancer_pele)
