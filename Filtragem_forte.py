@@ -56,16 +56,23 @@ def Filtro_Idade(D: dict):
 def Filtro_Neoplasias(D:list):
     listaprocura = []
     cont = 0
-    dic_Neoplasia= {"Neoplasia de colon": "*C18X", "Melanoma Maligno" : "r'^\*C43\d?X$'", "Outras Neoplasias de pele" : "*C44x",
-                    "Neoplasia de Pulmao": "*C34X"}
     lista_armazena_posi = []
-    procurado = str(input("Digite o que quer procurar na coluna: "))
+    procurado = str(input("Digite o que quer procurar na coluna(*C18X, *C43X ou *C34X): "))
+    procurado = re.escape(procurado)
+    procurado_regex = procurado.replace('X', r'[0-9X]')
+    try:
+        # Tentando compilar a expressão regular
+        print(procurado)
+        pattern = re.compile(procurado_regex)
+    except re.error as e:
+        print(f"Erro ao compilar a expressão regular: {e}")
+        return 0
+
     for i in range(len(D)):
         value = str(D[i])
-        dist = lv.distance(procurado, value)
-        if (dist <= 1):
+        if pattern.search(value):
             listaprocura.append(value)
-            cont = cont + 1
+            cont += 1
             lista_armazena_posi.append(i)
     print(listaprocura)
     print("achou", cont, "elementos")
@@ -179,16 +186,22 @@ def prep_csv(arqv_name):
 cancer_pulmao= []
 cancer_colon = []
 cancer_pele = []
-
+arqvs = ['M2016.csv', 'M2017.csv', 'M2018.csv', 'M2019.csv', 'M2020.csv', 'M2021.csv']
+"""""
 for i in range (5):
-    arqv_name = input("nome do arquivo ")
-    D, arqv= prep_csv(arqv_name)
+    #arqv_name = input("nome do arquivo ")
+    D, arqv= prep_csv(arqvs[i])
     lista_neo = usaPosicao(arqv, Filtro_Idade(D))
     cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
     cancer_colon.append(Filtro_Neoplasias(lista_neo))
     cancer_pele.append(Filtro_Neoplasias(lista_neo))
-
-labels_pulmao = ['2018', '2019', '2020', '2021', '2022']
-labels_colon = ['2018', '2019', '2020', '2021', '2022']
-labels_pele = ['2018', '2019', '2020', '2021', '2022']
+"""
+D, arqv= prep_csv("exemplopronto.csv")
+lista_neo = usaPosicao(arqv, Filtro_Estado(D))
+cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
+cancer_colon.append(Filtro_Neoplasias(lista_neo))
+cancer_pele.append(Filtro_Neoplasias(lista_neo))
+labels_pulmao = ['2016','2017','2018', '2019', '2020', '2021']
+labels_colon = ['2016','2017','2018', '2019', '2020', '2021']
+labels_pele = ['2016','2017','2018', '2019', '2020', '2021']
 plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_colon, labels_pele)
