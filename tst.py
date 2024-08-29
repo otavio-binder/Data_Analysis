@@ -1,56 +1,44 @@
-#importando módulos para a análise estátistica
-import Levenshtein as lv
 import numpy as np
-import scipy as scip
-import statsmodels as stmds
-#importando módulos para a plotagem de gráficos
-import matplotlib as mplt
-import seaborn as seab
-import pandas as pd 
-import Levenshtein as lv
-from urllib.request import urlopen
+import matplotlib.pyplot as plt
 
-#Importando o sistema
-from sys import argv
+def plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_colon, labels_pele):
+    width = 0.25  # Largura das barras
+    
+    # Definir a posição das barras para cada grupo
+    x_pulmao = np.arange(len(labels_pulmao))
+    x_colon = np.arange(len(labels_colon)) + width
+    x_pele = np.arange(len(labels_pele)) + 2 * width
+    
+    # Criar as barras
+    fig, ax = plt.subplots()
+    bar1 = ax.bar(x_pulmao, cancer_pulmao, width, label='Câncer de Pulmão')
+    bar2 = ax.bar(x_colon, cancer_colon, width, label='Câncer de Cólon')
+    bar3 = ax.bar(x_pele, cancer_pele, width, label='Câncer de Pele')
+    
+    # Adicionar rótulos, título e legenda
+    ax.set_xlabel('Ano')
+    ax.set_ylabel('Casos')
+    ax.set_title('Incidência de diferentes tipos de câncer ao longo dos anos')
+    
+    # Definir as posições e labels no eixo X para cada tipo de câncer
+    ax.set_xticks(np.concatenate([x_pulmao, x_colon, x_pele]))
+    ax.set_xticklabels(labels_pulmao + labels_colon + labels_pele, rotation=45, ha="right")
+    
+    ax.legend()
+    
+    # Mostrar o gráfico
+    plt.show()
 
-#importando nossa biblioteca de funções
-import Filtro_Neoplasia as fn
+# Exemplo de uso
+cancer_pulmao = [200, 520, 340, 760, 180]
+cancer_colon = [320, 110, 520, 230, 640]
+cancer_pele = [100, 280, 320, 250, 240]
 
-#Criando o dicionario
-if len(argv) >= 2:
-    filename  = argv[1]
-else:
-    filename = "exemplopronto.csv"
-fid = open(filename , "r") #abrindo o arquivo
-contents = fid.read() #lendo o arquivo e salvando em contents
-fid.close() #fechando o arquivo
-file_information = [] 
-contents = contents.split('\n')
-for k in range(0, len(contents)):
-    L = contents[k].split(';')
-    file_information.append(L)
+labels_pulmao = ['2018', '2019', '2020', '2021', '2022']
+labels_colon = ['2018', '2019', '2020', '2021', '2022']
+labels_pele = ['2018', '2019', '2020', '2021', '2022']
 
-M = np.array(file_information)
-M = fn.remove_quotes_each_field(M)
-N = M[:, [1, 7]]
-D = fn.table2dic(M)
-
-#importando o dataframe
-df_exemplopronto = pd.read_csv("exemplopronto.csv", sep = ";")
-
-#testando
-filtro = fn.Filtro_Neoplasias(D)
-print(type(filtro))
-
-# stats1, p1 = scip.stats.shapiro(x1)
-
-# alpha = 0.05
-# cShapiroNormal = 0
-# if p1 > alpha:
-#     print("Ditribuição normal")
-# else:
-#     print("distribuiçao nao é normal")
-# print(p1)
+plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_colon, labels_pele)
 
 
 
