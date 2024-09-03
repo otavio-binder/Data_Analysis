@@ -1,10 +1,35 @@
-dic_Mun = {12 : "ACRE" , 27 : "ALAGOAS", 16 : "AMAPÁ", 13 : "AMAZONAS", 29 : "BAHIA",
-            	23 : "CEARÁ", 53 : "DF", 32 : "ESPÍRITO SANTO", 52 : "GOIÁS",
-            	21 : "MARANHÃO", 51 : "MATO GROSSO", 50 : "MATO GROSSO DO SUL", 
-            	31 : "MINAS GERAIS" , 15 : "PARÁ" , 25 : "PARAÍBA" , 41 : "PARANÁ" , 26 : "PERNAMBUCO",
-            	22 : "PIAUÍ" , 33 : "RIO DE JANEIRO" , 24 : "RIO GRANDE DO NORTE" , 43 : "RIO GRANDE DO SUL" , 
-            	11 : "RONDONIA" , 14 : "RORAIMA" , 42 : "SANTA CATARINA" , 35 : "SÃO PAULO" ,
-            	28 : "SEGIPE" , 17 : "TOCANTINS"}
+import re
 
-a = dic_Mun[12]
-print(a)
+def Filtro_Neoplasias(D: list):
+    listaprocura = []
+    cont = 0
+    lista_armazena_posi = []
+
+    procurado = str(input("Digite o que quer procurar na coluna (*C18X, *C43X ou *C34X): "))
+
+    # Adicionando tratamento para caracteres especiais na entrada
+    procurado = re.escape(procurado)
+    procurado_regex = procurado.replace('X', r'[0-9X]')
+
+    try:
+        # Tentando compilar a expressão regular
+        pattern = re.compile(procurado_regex)
+    except re.error as e:
+        print(f"Erro ao compilar a expressão regular: {e}")
+        return 0
+
+    for i, value in enumerate(D):
+        if pattern.search(value):
+            listaprocura.append(value)
+            cont += 1
+            lista_armazena_posi.append(i)
+
+    print(listaprocura)
+    print("achou", cont, "elementos")
+    return cont
+
+# Exemplo de uso
+D = ["*C180", "*C43A", "*C440", "*C341", "*C342", "*C183", "*C18X"]
+Filtro_Neoplasias(D)
+
+
