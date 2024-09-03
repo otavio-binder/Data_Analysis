@@ -196,12 +196,14 @@ for i in range (5):
     cancer_colon.append(Filtro_Neoplasias(lista_neo))
     cancer_pele.append(Filtro_Neoplasias(lista_neo))
 """
-D, arqv= prep_csv("exemplopronto.csv")
-lista_neo = usaPosicao(arqv, Filtro_Estado(D))
-cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
-cancer_colon.append(Filtro_Neoplasias(lista_neo))
-cancer_pele.append(Filtro_Neoplasias(lista_neo))
-labels_pulmao = ['2016','2017','2018', '2019', '2020', '2021']
-labels_colon = ['2016','2017','2018', '2019', '2020', '2021']
-labels_pele = ['2016','2017','2018', '2019', '2020', '2021']
+for i in range(2):
+    D, arqv= prep_csv(str(input("Digite o nome do arquivo: ")))
+    lista_neo = usaPosicao(arqv, Filtro_Idade(D))
+    cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
+    cancer_colon.append(Filtro_Neoplasias(lista_neo))
+    cancer_pele.append(Filtro_Neoplasias(lista_neo))
+    
+labels_pulmao = ['2016','2020']
+labels_colon = ['2016','2020']
+labels_pele = ['2016','2020']
 plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_colon, labels_pele)
