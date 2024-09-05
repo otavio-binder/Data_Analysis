@@ -1,4 +1,3 @@
-
 from matplotlib import pyplot as plt #plotar os graficos
 import numpy as np #
 from sys import argv # importar os arquivos que serao lidos
@@ -160,33 +159,58 @@ def plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_c
     # Mostrar o gráfico
     plt.show()
 
+def process_first_csv_as_dict(filename, sep=";"):
+    """
+    Processa o primeiro arquivo CSV, usando a primeira linha como as chaves do dicionário
+    e todas as linhas seguintes como valores, removendo aspas dos campos.
+    """
+    with open(filename, 'r') as fid:
+        # Lê todo o conteúdo do arquivo
+        contents = fid.read()
+    # Divide o conteúdo em linhas e depois em colunas
+    lines = contents.split('\n')
+    data = [line.split(sep) for line in lines if line]
+    M = np.array(data) # Converte para uma matriz numpy
+    M = remove_quotes_each_field(M) # Remove as aspas de cada campo
+    # A primeira linha são as chaves
+    keys = M[0]
+    file_information = {key: [] for key in keys}
+    # As linhas seguintes são os valores
+    for row in M[1:]:
+        for i, key in enumerate(keys):
+            file_information[key].append(row[i])
+    return file_information
 
-def prep_csv(arqv_name):
-    if __name__ == '__main__':
-        #Verificando o arquivo
-        if len(argv) >= 2:
-            filename  = argv[1]  #verifica se o arquivo nao esta vazio
-        else:
-            filename = arqv_name
-        fid = open(filename , "r") #abrindo o arquivo
-        contents = fid.read() #lendo o arquivo e salvando em contents
-        fid.close() #fechando o arquivo
-        file_information = [] 
-        contents = contents.split('\n') # separa contents por final de string
-        for k in range(0, len(contents)):
-            L = contents[k].split(';') #separando as colunas por ';'
-            file_information.append(L)
-        arqv = pd.read_csv(arqv_name, sep = ";") #aramazenando essas informacoes e definindo um separador
-        M = np.array(file_information) #criando uma matriz na numpy do arquivo passado
-        M = remove_quotes_each_field(M) #funcao que remove aspas
-        N = M[:, [1, 7]]
-        D = table2dic(M) #convertando para um dicionario, onde a primeira linha e a chave e o resto das linha e valor
-        return D, arqv
+def merge_other_csv_with_dict(dict_data, filename, sep=";"):
+    """
+    Processa o segundo arquivo CSV, removendo aspas dos campos e adicionando os valores às listas
+    no dicionário existente. As chaves já foram definidas no primeiro arquivo e não serão modificadas.
+    """
+    with open(filename, 'r') as fid:
+        # Lê todo o conteúdo do arquivo
+        contents = fid.read()
+    # Divide o conteúdo em linhas e depois em colunas
+    lines = contents.split('\n')
+    data = [line.split(sep) for line in lines if line]
+
+    M = np.array(data) # Converte para uma matriz numpy
+    M = remove_quotes_each_field(M)  # Remove as aspas de cada campo
+    # Adiciona os valores ao dicionário existente
+    for row in M[1:]:  # Ignora a primeira linha
+        for i, key in enumerate(dict_data):
+            dict_data[key].append(row[i])
+    
+    return dict_data
+
+dict_data = process_first_csv_as_dict('M2016.csv')
+merged_data = merge_other_csv_with_dict(dict_data, 'M2016_1.csv')
+print(merged_data)
 
 cancer_pulmao= []
 cancer_colon = []
 cancer_pele = []
 arqvs = ['M2016.csv', 'M2017.csv', 'M2018.csv', 'M2019.csv', 'M2020.csv', 'M2021.csv']
+
 """""
 for i in range (5):
     #arqv_name = input("nome do arquivo ")
@@ -196,12 +220,15 @@ for i in range (5):
     cancer_colon.append(Filtro_Neoplasias(lista_neo))
     cancer_pele.append(Filtro_Neoplasias(lista_neo))
 """
-for i in range(2):
-    D, arqv= prep_csv(str(input("Digite o nome do arquivo: ")))
-    lista_neo = usaPosicao(arqv, Filtro_Idade(D))
-    cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
-    cancer_colon.append(Filtro_Neoplasias(lista_neo))
-    cancer_pele.append(Filtro_Neoplasias(lista_neo))
+
+dict_data = process_first_csv_as_dict('M2016.csv')
+D = merge_other_csv_with_dict(dict_data, 'M2016_1.csv')
+print(D)
+# D, arqv= prep_csv(str(input("Digite o nome do arquivo: ")))
+lista_neo = usaPosicao(D, Filtro_Idade(D))
+cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
+cancer_colon.append(Filtro_Neoplasias(lista_neo))
+cancer_pele.append(Filtro_Neoplasias(lista_neo))
     
 labels_pulmao = ['2016','2020']
 labels_colon = ['2016','2020']
