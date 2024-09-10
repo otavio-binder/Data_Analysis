@@ -37,10 +37,10 @@ def Filtro_Idade(D: dict):
     listaprocura = [] #criando lista vazia para armazenar os valores desejados
     cont = 0 # contador
     lista_armazena_posi = [] #lista para armazerna a posicao
-    idade1 = int(input("Digite a idade menor: " )) #input da menor idade que deseja buscar
-    idade2 = int(input("Digite a idade maior: " )) #input da maior idade que deseja buscar
-    idade1 = idade1 + 400
-    idade2 = idade2 + 400 # soma 400 em ambas pois nos dados o 4 representa a idade em anos
+    #idade1 = int(input("Digite a idade menor:(bota qualquer numero)" )) #input da menor idade que deseja buscar
+    #idade2 = int(input("Digite a idade maior:(ta indo de 40 a 90 agr pq eu mexi no code) " )) #input da maior idade que deseja buscar
+    idade1 = 40 + 400
+    idade2 = 90 + 400 # soma 400 em ambas pois nos dados o 4 representa a idade em anos
     for i in range(len(D["IDADE"])): #percorrendo a coluna da IDADE
         b = int(D["IDADE"][i]) # transformando para inteiro para poder comparar
         if (b >= idade1) and (b <= idade2) : # se a idade estiver entre os dois valores, armazena tal
@@ -52,13 +52,14 @@ def Filtro_Idade(D: dict):
     print("achou", cont, "elementos") # quantos elementos foram encontrados
     return lista_armazena_posi # retorna a lista de posicoes
 
-def Filtro_Neoplasias(D:list):
+def Filtro_Neoplasias(D:list, i):
     listaprocura = []
     cont = 0
     lista_armazena_posi = []
-    procurado = str(input("Digite o que quer procurar na coluna(*C18X, *C43X ou *C34X): "))
-    procurado = re.escape(procurado)
-    procurado_regex = procurado.replace('X', r'[0-9X]')
+    procurado = ["*C34X" , "*C18X" , "*C43X"]
+   # procurado = str(input("Digite o que quer procurar na coluna(*C34X, *C18X ou *C43X ): "))
+    procuradopi = re.escape(procurado[i])
+    procurado_regex = procuradopi.replace('X', r'[0-9X]')
     try:
         # Tentando compilar a expressão regular
         print(procurado)
@@ -73,7 +74,7 @@ def Filtro_Neoplasias(D:list):
             listaprocura.append(value)
             cont += 1
             lista_armazena_posi.append(i)
-    print(listaprocura)
+    #print(listaprocura)
     print("achou", cont, "elementos")
     return cont
 
@@ -120,24 +121,24 @@ def usaPosicao(D: dict, function):
     teste = []
     cnt = 0
     listStoragePos = function
-    key = input("Digite onde você quer usar a lista de posições: ")
-    keyEscolhida = D[key]
+    key = print("Digite onde você quer usar a lista de posições: LINHAA")
+    keyEscolhida = D["LINHAA"]
     for i in listStoragePos:
         teste.append(keyEscolhida[i])
         cnt += 1
-    print(teste)
+    #print(teste)
     print("Contou ",cnt," elementos")
-    return teste
+    return teste, cnt
 
 
 #Funçao para plotar grafico:
-def plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_colon, labels_pele):
+def plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels):
     width = 0.25  # Largura das barras
     
     # Definir a posição das barras para cada grupo
-    x_pulmao = np.arange(len(labels_pulmao))
-    x_colon = np.arange(len(labels_colon)) + width
-    x_pele = np.arange(len(labels_pele)) + 2 * width
+    x_pulmao = np.arange(len(labels))
+    x_colon = np.arange(len(labels)) + width
+    x_pele = np.arange(len(labels)) + 2 * width
     
     # Criar as barras
     fig, ax = plt.subplots()
@@ -152,7 +153,7 @@ def plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_c
     
     # Definir as posições e labels no eixo X para cada tipo de câncer
     ax.set_xticks(np.concatenate([x_pulmao, x_colon, x_pele]))
-    ax.set_xticklabels(labels_pulmao + labels_colon + labels_pele, rotation=45, ha="right")
+    ax.set_xticklabels(labels + labels + labels, rotation=45, ha="right")
     
     ax.legend()
     
@@ -202,14 +203,12 @@ def merge_other_csv_with_dict(dict_data, filename, sep=";"):
     
     return dict_data
 
-dict_data = process_first_csv_as_dict('M2016.csv')
-merged_data = merge_other_csv_with_dict(dict_data, 'M2016_1.csv')
-print(merged_data)
-
 cancer_pulmao= []
 cancer_colon = []
 cancer_pele = []
-arqvs = ['M2016.csv', 'M2017.csv', 'M2018.csv', 'M2019.csv', 'M2020.csv', 'M2021.csv']
+arqvs = ['M2016_1.csv','M2016_2.csv','M2017_1.csv', 'M2017_2.csv', 'M2018_1.csv', 'M2018_2.csv', 'M2019_1.csv' , 'M2019_2.csv', 'M2020_1.csv', 'M2020_2.csv',
+         'M2021_1.csv' , 'M2021_2.csv']
+cnt_list = []
 
 """""
 for i in range (5):
@@ -220,17 +219,26 @@ for i in range (5):
     cancer_colon.append(Filtro_Neoplasias(lista_neo))
     cancer_pele.append(Filtro_Neoplasias(lista_neo))
 """
+for i in range(6):
+    dict1 = process_first_csv_as_dict(arqvs[i])
+    D = merge_other_csv_with_dict(dict1, arqvs[i+1])
+    #dict3 = merge_other_csv_with_dict(dict2, "M2016_2.csv")
+    #D = merge_other_csv_with_dict(dict3, 'M2016_21.csv')
+    #print(D)
+    # D, arqv= prep_csv(str(input("Digite o nome do arquivo: ")))
+    lista_neo, cnt = usaPosicao(D, Filtro_Idade(D))
+    a = 0
+    cancer_pulmao.append(Filtro_Neoplasias(lista_neo, a))
+    a = 1
+    cancer_colon.append(Filtro_Neoplasias(lista_neo, a))
+    a = 2
+    cancer_pele.append(Filtro_Neoplasias(lista_neo, a))
 
-dict_data = process_first_csv_as_dict('M2016.csv')
-D = merge_other_csv_with_dict(dict_data, 'M2016_1.csv')
-print(D)
-# D, arqv= prep_csv(str(input("Digite o nome do arquivo: ")))
-lista_neo = usaPosicao(D, Filtro_Idade(D))
-cancer_pulmao.append(Filtro_Neoplasias(lista_neo))
-cancer_colon.append(Filtro_Neoplasias(lista_neo))
-cancer_pele.append(Filtro_Neoplasias(lista_neo))
+cnt_list.append(cancer_pulmao)
+cnt_list.append(cancer_colon)
+cnt_list.append(cancer_pele)
     
-labels_pulmao = ['2016','2020']
-labels_colon = ['2016','2020']
-labels_pele = ['2016','2020']
-plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels_pulmao, labels_colon, labels_pele)
+labels = ['2016','2017', '2018','2019','2020', '2021']
+
+print("Dados: Pulmao, Colon, Pele", cnt_list)
+plot_graph(cancer_pulmao, cancer_colon, cancer_pele, labels)
