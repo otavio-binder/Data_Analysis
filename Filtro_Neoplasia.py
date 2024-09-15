@@ -138,7 +138,7 @@ def Filtro_Estado(D: dict):
     for key, value in dic_Mun.items():
         distancia = lv(endereco, value)
         if	distancia <=2:
-            print(f"{key} e {value}")
+            print(f"{key}e {value}")
             dic_orden[key] = value
     for chv in range(len(listadic)):
         if listadic[chv] == '':
