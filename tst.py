@@ -1,35 +1,36 @@
-import re
-
-def Filtro_Neoplasias(D: list):
-    listaprocura = []
-    cont = 0
-    lista_armazena_posi = []
-
-    procurado = str(input("Digite o que quer procurar na coluna (*C18X, *C43X ou *C34X): "))
-
-    # Adicionando tratamento para caracteres especiais na entrada
-    procurado = re.escape(procurado)
-    procurado_regex = procurado.replace('X', r'[0-9X]')
-
-    try:
-        # Tentando compilar a expressão regular
-        pattern = re.compile(procurado_regex)
-    except re.error as e:
-        print(f"Erro ao compilar a expressão regular: {e}")
-        return 0
-
-    for i, value in enumerate(D):
-        if pattern.search(value):
-            listaprocura.append(value)
-            cont += 1
-            lista_armazena_posi.append(i)
-
-    print(listaprocura)
-    print("achou", cont, "elementos")
-    return cont
-
+import pandas as pd
+import Filtro_Neoplasia as Fn
+import scipy
 # Exemplo de uso
-D = ["*C180", "*C43A", "*C440", "*C341", "*C342", "*C183", "*C18X"]
-Filtro_Neoplasias(D)
+# D = ["*C180", "*C43A", "*C440", "*C341", "*C342", "*C183", "*C18X"]
+# Fn.Filtro_Neoplasias(D)
 
 
+csv = pd.read_csv("/home/andre/Documentos/Testes_Estatisticos/M2020_1.csv", sep = ";")
+
+csv_cancerpulmao1 = csv.loc[csv['LINHAA'] ==  "*C341"]
+csv_cancerpulmao2 = csv.loc[csv['LINHAA'] ==  "*C342"]
+
+# Puxando coluna de idades
+idades1 = csv_cancerpulmao1['IDADE']
+idades2 = csv_cancerpulmao2['IDADE']
+
+# Subtraindo 400 de todos os itens devido à nomenclatura do CID
+idades1 = [idade - 400 for idade in idades1]
+idades2 = [idade - 400 for idade in idades2]
+
+print(f'Idades 1: {idades1}')
+print(f'Idades 2: {idades2}')
+
+# Valor do alpha
+alpha = 0.05
+
+stat, p_value = scipy.stats.shapiro(idades1)
+
+print(f'Estatística do teste: {stat}')
+print(f'Valor-p: {p_value}')
+
+if p_value > alpha:
+    print("Distribuição aparentemente normal (falha ao rejeitar H0)")
+else:
+    print("Distribuição não é normal (rejeita-se H0)")

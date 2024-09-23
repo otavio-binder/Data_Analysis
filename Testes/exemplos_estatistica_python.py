@@ -44,6 +44,7 @@ if __name__ == '__main__':
     plt.grid()
     plt.legend(fontsize=10.0)
     # plt.savefig('plot_example.png', dpi=300, bbox_inches = 'tight')
+    input("Press enter")
     plt.show()
     #
     # Exemplo de vetores para comparação estatística
@@ -73,6 +74,7 @@ if __name__ == '__main__':
     plt.ylabel('${f_X(x)}$', rotation = 0.0, labelpad = 20)
     plt.grid()
     plt.legend(fontsize=12.0)
+    input("Press enter")
     plt.show()
     # Teste de normalidade para x1
     s1, p1 = scipy.stats.shapiro(x1)
@@ -83,6 +85,7 @@ if __name__ == '__main__':
     h2 = (h2 / N) / (c2[1] - c2[0])
     plt.plot((c2[1 :] + c2[: len(c2) - 1]) / 2.0, h2)
     plt.ylim((0, 1.2))
+    input("Press enter")
     plt.show()
     # Teste de normalidade para x2
     s2, p2 = scipy.stats.shapiro(x2)
