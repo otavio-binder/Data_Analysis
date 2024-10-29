@@ -48,7 +48,7 @@ valores = list(A) + list(B) + list(C)
 
 # Criando uma lista para identificar os grupos
 grupos = ['A'] * N + ['B'] * N + ['C'] * N
-
+print("\n", grupos, "\n")
 # Criando o DataFrame
 dados = pd.DataFrame({'grupo': grupos, 'valor': valores})
 
